@@ -1,0 +1,11 @@
+global:
+  resolve_timeout: 1m
+  opsgenie_api_url: 'https://api.opsgenie.com/'
+
+route:
+  receiver: 'opsgenie'
+
+receivers:
+  - name: 'opsgenie'
+    opsgenie_configs:
+      - api_key: '36ccd84f-9cb2-437a-877c-c1ffc8cdecad'

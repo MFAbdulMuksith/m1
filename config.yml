@@ -1,0 +1,235 @@
+modules:
+  ray_ilooops:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Forgot Password"
+
+  fms_ilooops:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Forgot Password"
+
+  qhse-fe:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "ilooops QHSE MANAGEMENT SYSTEM"
+
+  qhse-be:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+
+  arabian-qhse-fe:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "ilooops QHSE MANAGEMENT SYSTEM"
+
+  arabian-qhse-be:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+
+  job_envoy:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Jobs"
+
+  envoyortus_job_envoy:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Jobs"
+
+  wps_in_place:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "OUR SERVICES"
+
+  wps_in_place_job_envoy:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Jobs"
+
+  go_rich:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Take control of your MONEY"
+
+  admin_go_rich:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - " Go Rich Application"
+
+  go_rich_be:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Password"
+
+  go_promate_be:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Remember me"
+
+  my_smartys:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Welcome to Smarty’s Dry Cleaners"
+
+  domico_gems:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Gems"
+
+  go_promate:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+
+  ilooops:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Improve Business Efficiency With Our ERP Software"
+
+  pro_soft:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Streamline your Human Resources."
+
+  radiance_soft:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Contact Us"
+
+  m2_capital:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "About Us"
+
+  ascension_holding:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Conception to Delivery"
+
+  ilooops_sme:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Web Enterprise Resource Planning Solution."
+
+          #  slmcp:
+          # prober: http
+          # http:
+          # preferred_ip_protocol: "ip4"
+          # valid_status_codes: [200]
+          # fail_if_body_not_matches_regexp:
+          # - "Forgotten account?"
+
+          # slmcp_sme:
+          # prober: http
+          # http:
+          # preferred_ip_protocol: "ip4"
+          # valid_status_codes: [200]
+          # fail_if_body_not_matches_regexp:
+          # - "Please Reconfirm Your User Credential"
+
+  dba.ilooops:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "You need to enable JavaScript to run this app."
+
+  ray-recruitment:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Sign Up"
+
+  ilooops-uat:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Login"
+
+  ilooopsmail:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Welcome to email sender 123"
+
+  achieve-erp:
+    prober: http
+    http:
+      preferred_ip_protocol: "ip4"
+      valid_status_codes: [200]
+      fail_if_body_not_matches_regexp:
+        - "Solutions"
+
