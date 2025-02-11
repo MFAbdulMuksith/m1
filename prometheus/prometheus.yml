@@ -14,7 +14,7 @@ alerting:
   alertmanagers:
     - static_configs:
       - targets:
-        - '10.0.3.110:9093'
+        - '43.205.119.100:9093'
 
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
@@ -30,650 +30,650 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ["43.205.119.100:9090"]
 
   #node-exporter for prometheus host server
   - job_name: "prometheus-host-server"
     static_configs:
-      - targets: ["10.0.3.110:9100"]
+      - targets: ["43.205.119.100:9100"]
 
   #grafana server monitor
   - job_name: "grafana-service"
     static_configs:
-      - targets: ["10.0.3.110:3000"]
+      - targets: ["43.205.119.100:3000"]
 
   #alertmanager server monitor
   - job_name: "alert-manager-service"
     static_configs:
-      - targets: ["10.0.3.110:9093"]
+      - targets: ["43.205.119.100:9093"]
 
   #cadvisor server monitor
   - job_name: "cadvisor-service"
     static_configs:
-      - targets: ["10.0.3.110:8080"]
+      - targets: ["43.205.119.100:8080"]
 
   #blackbox server monitor
   - job_name: "blackbox-service"
     static_configs:
-      - targets: ["10.0.3.110:9115"]
-
-  #node-exporter for ASH-Preprod  server
-  - job_name: "ASH-Preprod"
-    static_configs:
-      - targets: ["172.32.20.90:9100"]
-
-  # Ilooops-Production-01
-  - job_name: "ilooops-production-01"
-    static_configs:
-      - targets: ["10.0.2.124:9100"]
-
-  # Ilooops-Production-02
-  - job_name: "ilooops-production-02"
-    static_configs:
-      - targets: ["10.0.3.56:9100"]
-
-  #QHSE Production-1
-  - job_name: "QHSE-production-1"
-    static_configs:
-      - targets: ["10.0.3.249:9100"]
-
-  # - job_name: "community-production"
-  #   static_configs:
-  #   - targets: ["10.0.3.141:9100"]
-
-  - job_name: "gorich-production"
-    static_configs:
-      - targets: ["10.0.3.228:9100"]
-
-  - job_name: "gopromate-production"
-    static_configs:
-      - targets: ["10.0.3.60:9100"]
-
-  # #QHSE Production - 2
-  # - job_name: "QHSE-production-2"
-  #   static_configs:
-  #     - targets: ["10.0.2.254:9100"]
-
- # - job_name: "ASH-UAT"
- #   static_configs:
- #     - targets: ["172.32.20.101:9100"]
-
-
-  - job_name: "ASH-Sandbox"
-    static_configs:
-      - targets: ["10.0.2.153:9100"]
-
-  # # ilooops-ray-production-1
-  # - job_name: "ilooops-ray-production-01"
-  #   static_configs:
-  #     - targets: ["51.112.103.48:9100"]
-
-  # # ilooops-ray-production-2
-  # - job_name: "ilooops-ray-production-02"
-  #   static_configs:
-  #     - targets: ["51.112.91.237:9100"]
-
-  # # ilooops-ray-sandbox
-  # - job_name: "ilooops-ray-sandbox"
-  #   static_configs:
-  #     - targets: ["51.112.91.125:9100"]
-
-
-  # UAT-Server
-  - job_name: "UAT-Server"
-    static_configs:
-      - targets: ["172.32.20.164:9100"]
-
-  # # VESTA-CP
-  #- job_name: "VESTA-CP"
-  #  static_configs:
-  #    - targets: ["52.77.25.41:9100"]
-
-
-  #RB-Prod-Sites
-  # - job_name: "RB-Prod-Sites"
-  #  static_configs:
-  #    - targets: ["10.0.3.249:9100"]
-
-
-  - job_name: 'ray_ilooops'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ray_ilooops]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://ray.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'fms_ilooops'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [fms_ilooops]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://fms.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'job_envoy'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [job_envoy]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://jobenvoy.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'envoyortus_job_envoy'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [envoyortus_job_envoy]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://envoyortus.jobenvoy.com/jobs
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'wps_in_place'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [wps_in_place]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://wpsinplace.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'wps_in_place_job_envoy'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [wps_in_place_job_envoy]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://wpsinplace.jobenvoy.com/jobs
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'go_rich'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [go_rich]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://gorich.app
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'admin_go_rich'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [admin_go_rich]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://admin.gorich.app
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'go_rich_be'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [go_rich_be]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://be.gorich.app/login
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'go_promate_be'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [go_promate_be]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://be.gopromate.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'domico_gems'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [domico_gems]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://domicogems.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'my_smartys'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [my_smartys]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.mysmartys.co.uk
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'gopromate'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [go_promate]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://gopromate.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'ilooops'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ilooops]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'pro_soft'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [pro_soft]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.prosoftholding.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'radiance_soft'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [radiance_soft]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.radiance-soft.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
- #  - job_name: 'redberyl_it'
-    # scheme: http
-    #    metrics_path: /probe
-    # params:
-    #  module: [redberyl_it]  # Look for a HTTP 200 response.
-    # static_configs:
-    #  - targets:
-    #    - https://www.redberylit.com
-    # relabel_configs:
-    #  - source_labels: [__address__]
-    #    target_label: __param_target
-    #  - source_labels: [__param_target]
-    #    target_label: instance
-    #  - target_label: __address__
-    #    replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'm2_capital'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [m2_capital]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://www.m2capital.net
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'ascension_holding'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ascension_holding]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://ascension-holding.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-
-  - job_name: 'ilooops_sme'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ilooops_sme]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://ilooopssme.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-#  - job_name: 'slmcp'
-    # scheme: http
-    #    metrics_path: /probe
-    # params:
-    #  module: [slmcp]  # Look for a HTTP 200 response.
-    # static_configs:
-    #  - targets:
-    #    - https://slmcp.com
-    # relabel_configs:
-    #  - source_labels: [__address__]
-    #    target_label: __param_target
-    #  - source_labels: [__param_target]
-    #   target_label: instance
-    #  - target_label: __address__
-    #   replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'qhse-fe'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [qhse-fe]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://qhsefe.ilooops.com/#/pages/login
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'qhse-be'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [qhse-be]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://qhsebe.ilooops.com/
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'arabian-qhse-fe'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [arabian-qhse-fe]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://arabian.ilooopsqhse.com/#/pages/login
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'arabian-qhse-be'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [arabian-qhse-be]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://arabianbe.ilooopsqhse.com/
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-
-        # - job_name: 'slmcp_sme'
-    # scheme: http
-    #  metrics_path: /probe
-    # params:
-    #  module: [slmcp_sme]  # Look for a HTTP 200 response.
-    # static_configs:
-    #  - targets:
-    #    - https://sme.slmcp.com
-    # relabel_configs:
-    #  - source_labels: [__address__]
-    #    target_label: __param_target
-    #  - source_labels: [__param_target]
-    #    target_label: instance
-    #  - target_label: __address__
-    #    replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-
-
-        # - job_name: 'dba.ilooops'
-    # scheme: http
-    # metrics_path: /probe
-    # params:
-    #  module: [dba.ilooops]  # Look for a HTTP 200 response.
-    # static_configs:
-    #  - targets:
-    #      - https://dba.ilooops.com
-    # relabel_configs:
-    #  - source_labels: [__address__]
-    #    target_label: __param_target
-    #  - source_labels: [__param_target]
-    #    target_label: instance
-    #  - target_label: __address__
-    #    replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  # - job_name: 'dbaissue.ilooops'
-  #   # scheme: http
-  #   metrics_path: /probe
-  #   params:
-  #     module: [dbaissue.ilooops]  # Look for a HTTP 200 response.
-  #   static_configs:
-  #     - targets:
-  #         - https://dbaissue.ilooops.com
-  #   relabel_configs:
-  #     - source_labels: [__address__]
-  #       target_label: __param_target
-  #     - source_labels: [__param_target]
-  #       target_label: instance
-  #     - target_label: __address__
-  #       replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-  - job_name: 'ray-recruitment'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ray-recruitment]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-          - https://ray-recruitment.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-
-  - job_name: 'ilooops-uat'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ilooops-uat]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://erp.rbdemo.live
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-  - job_name: 'ilooopsmail'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [ilooopsmail]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://ilooopsmail.ilooops.com
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-
-
-  - job_name: 'achieve-erp'
-    # scheme: http
-    metrics_path: /probe
-    params:
-      module: [achieve-erp]  # Look for a HTTP 200 response.
-    static_configs:
-      - targets:
-        - https://achieve-erp.com/
-    relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: 10.0.3.110:9115  # The blackbox exporter's real hostname:port.
-
-    # Loki Monitoring
-    # - job_name: "loki"
-    # metrics_path: /metrics
-    #static_configs:
-    #  - targets:
-    #      - "localhost:3100"
+      - targets: ["43.205.119.100:9115"]
+
+#   #node-exporter for ASH-Preprod  server
+#   - job_name: "ASH-Preprod"
+#     static_configs:
+#       - targets: ["172.32.20.90:9100"]
+
+#   # Ilooops-Production-01
+#   - job_name: "ilooops-production-01"
+#     static_configs:
+#       - targets: ["10.0.2.124:9100"]
+
+#   # Ilooops-Production-02
+#   - job_name: "ilooops-production-02"
+#     static_configs:
+#       - targets: ["10.0.3.56:9100"]
+
+#   #QHSE Production-1
+#   - job_name: "QHSE-production-1"
+#     static_configs:
+#       - targets: ["10.0.3.249:9100"]
+
+#   # - job_name: "community-production"
+#   #   static_configs:
+#   #   - targets: ["10.0.3.141:9100"]
+
+#   - job_name: "gorich-production"
+#     static_configs:
+#       - targets: ["10.0.3.228:9100"]
+
+#   - job_name: "gopromate-production"
+#     static_configs:
+#       - targets: ["10.0.3.60:9100"]
+
+#   # #QHSE Production - 2
+#   # - job_name: "QHSE-production-2"
+#   #   static_configs:
+#   #     - targets: ["10.0.2.254:9100"]
+
+#  # - job_name: "ASH-UAT"
+#  #   static_configs:
+#  #     - targets: ["172.32.20.101:9100"]
+
+
+#   - job_name: "ASH-Sandbox"
+#     static_configs:
+#       - targets: ["10.0.2.153:9100"]
+
+#   # # ilooops-ray-production-1
+#   # - job_name: "ilooops-ray-production-01"
+#   #   static_configs:
+#   #     - targets: ["51.112.103.48:9100"]
+
+#   # # ilooops-ray-production-2
+#   # - job_name: "ilooops-ray-production-02"
+#   #   static_configs:
+#   #     - targets: ["51.112.91.237:9100"]
+
+#   # # ilooops-ray-sandbox
+#   # - job_name: "ilooops-ray-sandbox"
+#   #   static_configs:
+#   #     - targets: ["51.112.91.125:9100"]
+
+
+#   # UAT-Server
+#   - job_name: "UAT-Server"
+#     static_configs:
+#       - targets: ["172.32.20.164:9100"]
+
+#   # # VESTA-CP
+#   #- job_name: "VESTA-CP"
+#   #  static_configs:
+#   #    - targets: ["52.77.25.41:9100"]
+
+
+#   #RB-Prod-Sites
+#   # - job_name: "RB-Prod-Sites"
+#   #  static_configs:
+#   #    - targets: ["10.0.3.249:9100"]
+
+
+#   - job_name: 'ray_ilooops'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ray_ilooops]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://ray.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'fms_ilooops'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [fms_ilooops]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://fms.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'job_envoy'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [job_envoy]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://jobenvoy.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'envoyortus_job_envoy'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [envoyortus_job_envoy]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://envoyortus.jobenvoy.com/jobs
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'wps_in_place'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [wps_in_place]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://wpsinplace.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'wps_in_place_job_envoy'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [wps_in_place_job_envoy]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://wpsinplace.jobenvoy.com/jobs
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'go_rich'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [go_rich]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://gorich.app
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'admin_go_rich'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [admin_go_rich]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://admin.gorich.app
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'go_rich_be'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [go_rich_be]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://be.gorich.app/login
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'go_promate_be'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [go_promate_be]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://be.gopromate.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'domico_gems'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [domico_gems]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://domicogems.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'my_smartys'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [my_smartys]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://www.mysmartys.co.uk
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'gopromate'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [go_promate]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://gopromate.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'ilooops'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ilooops]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://www.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'pro_soft'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [pro_soft]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://www.prosoftholding.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'radiance_soft'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [radiance_soft]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://www.radiance-soft.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#  #  - job_name: 'redberyl_it'
+#     # scheme: http
+#     #    metrics_path: /probe
+#     # params:
+#     #  module: [redberyl_it]  # Look for a HTTP 200 response.
+#     # static_configs:
+#     #  - targets:
+#     #    - https://www.redberylit.com
+#     # relabel_configs:
+#     #  - source_labels: [__address__]
+#     #    target_label: __param_target
+#     #  - source_labels: [__param_target]
+#     #    target_label: instance
+#     #  - target_label: __address__
+#     #    replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'm2_capital'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [m2_capital]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://www.m2capital.net
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'ascension_holding'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ascension_holding]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://ascension-holding.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+
+#   - job_name: 'ilooops_sme'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ilooops_sme]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://ilooopssme.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+# #  - job_name: 'slmcp'
+#     # scheme: http
+#     #    metrics_path: /probe
+#     # params:
+#     #  module: [slmcp]  # Look for a HTTP 200 response.
+#     # static_configs:
+#     #  - targets:
+#     #    - https://slmcp.com
+#     # relabel_configs:
+#     #  - source_labels: [__address__]
+#     #    target_label: __param_target
+#     #  - source_labels: [__param_target]
+#     #   target_label: instance
+#     #  - target_label: __address__
+#     #   replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'qhse-fe'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [qhse-fe]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://qhsefe.ilooops.com/#/pages/login
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'qhse-be'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [qhse-be]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://qhsebe.ilooops.com/
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'arabian-qhse-fe'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [arabian-qhse-fe]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://arabian.ilooopsqhse.com/#/pages/login
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'arabian-qhse-be'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [arabian-qhse-be]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://arabianbe.ilooopsqhse.com/
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+
+#         # - job_name: 'slmcp_sme'
+#     # scheme: http
+#     #  metrics_path: /probe
+#     # params:
+#     #  module: [slmcp_sme]  # Look for a HTTP 200 response.
+#     # static_configs:
+#     #  - targets:
+#     #    - https://sme.slmcp.com
+#     # relabel_configs:
+#     #  - source_labels: [__address__]
+#     #    target_label: __param_target
+#     #  - source_labels: [__param_target]
+#     #    target_label: instance
+#     #  - target_label: __address__
+#     #    replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+
+
+#         # - job_name: 'dba.ilooops'
+#     # scheme: http
+#     # metrics_path: /probe
+#     # params:
+#     #  module: [dba.ilooops]  # Look for a HTTP 200 response.
+#     # static_configs:
+#     #  - targets:
+#     #      - https://dba.ilooops.com
+#     # relabel_configs:
+#     #  - source_labels: [__address__]
+#     #    target_label: __param_target
+#     #  - source_labels: [__param_target]
+#     #    target_label: instance
+#     #  - target_label: __address__
+#     #    replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   # - job_name: 'dbaissue.ilooops'
+#   #   # scheme: http
+#   #   metrics_path: /probe
+#   #   params:
+#   #     module: [dbaissue.ilooops]  # Look for a HTTP 200 response.
+#   #   static_configs:
+#   #     - targets:
+#   #         - https://dbaissue.ilooops.com
+#   #   relabel_configs:
+#   #     - source_labels: [__address__]
+#   #       target_label: __param_target
+#   #     - source_labels: [__param_target]
+#   #       target_label: instance
+#   #     - target_label: __address__
+#   #       replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#   - job_name: 'ray-recruitment'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ray-recruitment]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#           - https://ray-recruitment.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+
+#   - job_name: 'ilooops-uat'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ilooops-uat]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://erp.rbdemo.live
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+#   - job_name: 'ilooopsmail'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [ilooopsmail]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://ilooopsmail.ilooops.com
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+
+
+#   - job_name: 'achieve-erp'
+#     # scheme: http
+#     metrics_path: /probe
+#     params:
+#       module: [achieve-erp]  # Look for a HTTP 200 response.
+#     static_configs:
+#       - targets:
+#         - https://achieve-erp.com/
+#     relabel_configs:
+#       - source_labels: [__address__]
+#         target_label: __param_target
+#       - source_labels: [__param_target]
+#         target_label: instance
+#       - target_label: __address__
+#         replacement: 43.205.119.100:9115  # The blackbox exporter's real hostname:port.
+
+#     # Loki Monitoring
+#     # - job_name: "loki"
+#     # metrics_path: /metrics
+#     #static_configs:
+#     #  - targets:
+#     #      - "localhost:3100"

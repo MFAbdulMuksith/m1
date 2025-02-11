@@ -192,12 +192,3 @@ docker-compose pull <service-name>
 docker-compose up -d <service-name>
 ```
 
----
-
-## License
-
-This setup is open-source and available under the MIT License. Feel free to modify it to suit your needs.
-
----
-
-This `README.md` gives a clear overview of the entire setup, providing essential details for installation, configuration, and usage of the monitoring stack.

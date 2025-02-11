@@ -132,7 +132,7 @@ services:
     command:
       - "--config.file=/etc/loki/loki-config.yaml" # Loki config file
     volumes:
-      - /opt/prometheus/loki/loki-config.yaml:/etc/loki/loki-config.yaml # Loki config file
+      - /opt/container/loki/loki-config.yaml:/etc/loki/loki-config.yaml # Loki config file
       - /opt/prometheus/loki-data:/data/loki # Loki data storage
     networks:
       - monitor
@@ -142,11 +142,11 @@ services:
     restart: always
     container_name: promtail
     volumes:
-      - /opt/prometheus/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml # Promtail config file
-      - /var/log:/var/log # Host logs directory
-      - /opt/prometheus/promtail/promtail-positions:/var/lib/promtail # Promtail positions file
+      - /opt/container/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
+      - /var/log:/var/log
+      - /opt/container/promtail/positions.yaml:/var/lib/promtail/positions.yaml
     command:
-      - "--config.file=/etc/promtail/promtail-config.yaml" # Promtail config file
+      - "--config.file=/etc/promtail/promtail-config.yaml"
     networks:
       - monitor
 

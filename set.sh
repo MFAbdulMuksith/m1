@@ -73,6 +73,9 @@ sudo chown -R promtail:promtail /opt/prometheus/promtail/promtail-positions
 sudo chmod -R 775 /opt/prometheus/promtail/promtail-positions
 sudo chown root:root /opt/prometheus/promtail/promtail-config.yaml
 sudo chmod 644 /opt/prometheus/promtail/promtail-config.yaml
+sudo touch /opt/container/promtail/promtail-config.yaml
+sudo chmod 644 /opt/container/promtail/promtail-config.yaml
+sudo chown root:root /opt/container/promtail/promtail-config.yaml
 
 # Loki
 sudo chown root:root /opt/prometheus/loki/loki-config.yaml
@@ -80,6 +83,9 @@ sudo chmod 644 /opt/prometheus/loki/loki-config.yaml
 sudo mkdir -p /opt/prometheus/loki-data
 sudo chown -R 10001:10001 /opt/prometheus/loki-data
 sudo chmod -R 775 /opt/prometheus/loki-data
+sudo touch /opt/container/loki/loki-config.yaml
+sudo chmod 644 /opt/container/loki/loki-config.yaml
+sudo chown root:root /opt/container/loki/loki-config.yaml
 
 docker network create monitor
 
