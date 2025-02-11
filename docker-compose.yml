@@ -132,7 +132,7 @@ services:
     command:
       - "--config.file=/etc/loki/loki-config.yaml" # Loki config file
     volumes:
-      - /opt/prometheus/loki-config.yaml:/etc/loki/loki-config.yaml # Loki config file
+      - /opt/prometheus/loki/loki-config.yaml:/etc/loki/loki-config.yaml # Loki config file
       - /opt/prometheus/loki-data:/data/loki # Loki data storage
     networks:
       - monitor
@@ -142,42 +142,13 @@ services:
     restart: always
     container_name: promtail
     volumes:
-      - /opt/prometheus/promtail-config.yaml:/etc/promtail/promtail-config.yaml # Promtail config file
+      - /opt/prometheus/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml # Promtail config file
       - /var/log:/var/log # Host logs directory
-      - /opt/prometheus/promtail-positions:/var/lib/promtail # Promtail positions file
+      - /opt/prometheus/promtail/promtail-positions:/var/lib/promtail # Promtail positions file
     command:
       - "--config.file=/etc/promtail/promtail-config.yaml" # Promtail config file
     networks:
       - monitor
-
-  # Loki Configuration
-  # loki:
-  #   image: grafana/loki:3.2.1
-  #   restart: always
-  #   container_name: loki
-  #   ports:
-  #     - 3100:3100 # Loki API port
-  #   command:
-  #     - "--config.file=/etc/loki/loki-config.yaml" # Standard path for config files in containers
-  #   volumes:
-  #     - /opt/prometheus/loki-config.yaml:/etc/loki/loki-config.yaml # Correct mapping path for config
-  #     - /opt/prometheus/loki-data:/data/loki # Persistent data directory
-  #   networks:
-  #     - monitor # Loki connected to the 'monitor' network
-
-  # Promtail Configuration
-  # promtail:
-  #    image: grafana/promtail:3.2.1
-  #    restart: always
-  #    container_name: promtail
-  #    volumes:
-  #      - /opt/prometheus/promtail-config.yaml:/etc/promtail/promtail-config.yaml  # Updated path for Promtail config
-  #      - /var/log:/var/log  # Host logs directory
-  #      - /opt/prometheus/promtail-positions:/var/lib/promtail  # Persistent positions file
-  #    command:
-  #      - '--config.file=/etc/promtail/promtail-config.yaml'  # Standard path for config files in containers
-  #    networks:
-  #      - monitor  # Promtail is connected to the 'monitor' network
 
 networks:
   monitor:
