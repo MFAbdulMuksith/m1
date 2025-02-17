@@ -5,11 +5,11 @@
 # sudo chmod +x set.sh
 # Run this Script: ./set.sh
 
-# Ensure script is run with sudo
-# if [[ $EUID -ne 0 ]]; then
-#    echo "This script must be run as root or with sudo."
-#    exit 1
-# fi
+Ensure script is run with sudo
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root or with sudo."
+   exit 1
+fi
 
 # Define base directory for configurations and data
 BASE_DIR="/opt/container"
@@ -76,6 +76,10 @@ sudo chmod 644 /opt/prometheus/promtail/promtail-config.yaml
 sudo touch /opt/container/promtail/promtail-config.yaml
 sudo chmod 644 /opt/container/promtail/promtail-config.yaml
 sudo chown root:root /opt/container/promtail/promtail-config.yaml
+sudo chown -R promtail:promtail /opt/container/promtail
+sudo chmod -R 644 /opt/container/promtail/*
+
+
 
 # Loki
 sudo chown root:root /opt/prometheus/loki/loki-config.yaml
@@ -99,7 +103,7 @@ docker-compose up -d
 
 echo "Monitoring Environment setup completed!"
 echo "Test access to the services:"
-echo "Prometheus: http://<PUBLIC-IP>:9090"
-echo "Grafana: http://<PUBLIC-IP>:3000"
-echo "Alertmanager: http://<PUBLIC-IP>:9093"
-echo "Traefik Dashboard: http://<PUBLIC-IP>:8050"
+echo "Prometheus: http://43.205.119.100:9090"
+echo "Grafana: http://43.205.119.100:3000"
+echo "Alertmanager: http://43.205.119.100:9093"
+echo "Traefik Dashboard: http://43.205.119.100:8050"
