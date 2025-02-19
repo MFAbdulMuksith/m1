@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Ensure script is run with sudo
+# Ensure script is run as root
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root or with sudo."
-   exit 1
+    echo "This script must be run as root or with sudo."
+    exit 1
 fi
 
 # Define base directory for configurations and data
@@ -18,65 +18,124 @@ TRAEFIK_DIR="$BASE_DIR/traefik"
 
 # Create necessary directories
 echo "Creating required directories..."
-mkdir -p $PROMETHEUS_DIR/data
+mkdir -p $PROMETHEUS_DIR $PROMETHEUS_DIR/data
 mkdir -p $ALERTMANAGER_DIR
-mkdir -p $GRAFANA_DIR/data
+mkdir -p $GRAFANA_DIR $GRAFANA_DIR/data
 mkdir -p $BLACKBOX_DIR
 mkdir -p $LOKI_DIR
 mkdir -p $PROMTAIL_DIR
 mkdir -p $TRAEFIK_DIR
 
-# Set proper permissions
-echo "Setting permissions..."
+# Set proper permissions for base directory
 chmod -R 755 $BASE_DIR
 
-# Copy configuration files
-echo "Copying configuration files..."
-sudo cp -R ./prometheus/prometheus.yml $PROMETHEUS_DIR/prometheus.yml
-sudo cp -R ./prometheus/alert.rules.yml $PROMETHEUS_DIR/alert.rules.yml
-sudo cp -R ./alertmanager/alertmanager.yml $ALERTMANAGER_DIR/alertmanager.yml
-sudo cp -R ./blackbox-exporter/config.yml $BLACKBOX_DIR/config.yml
-sudo cp -R ./loki/loki-config.yaml $LOKI_DIR/loki-config.yaml
-sudo cp -R ./promtail/promtail-config.yaml $PROMTAIL_DIR/promtail-config.yaml
-sudo cp -R ./promtail/positions.yaml $PROMTAIL_DIR/positions.yaml
+# Function to copy files if they do not exist and are non-empty
+copy_if_not_exists() {
+    local src=$1
+    local dest=$2
+    if [[ ! -f "$dest" ]]; then
+        if [[ -s "$src" ]]; then  # Ensure source file exists and is non-empty
+            echo "Copying $src to $dest"
+            cp "$src" "$dest"
+        else
+            echo "Warning: Source file $src is missing or empty. Skipping."
+        fi
+    else
+        echo "Skipping $dest (already exists)."
+    fi
+}
 
-# Set permissions for Prometheus
-echo "Setting permissions for Prometheus..."
-sudo chown root:root $PROMETHEUS_DIR/prometheus.yml
-sudo chmod 644 $PROMETHEUS_DIR/prometheus.yml
-sudo chown root:root $PROMETHEUS_DIR/alert.rules.yml
-sudo chmod 644 $PROMETHEUS_DIR/alert.rules.yml
-sudo chown -R 65534:65534 $PROMETHEUS_DIR/data
-sudo chmod -R 755 $PROMETHEUS_DIR/data
+# Copy configuration files only if they don't already exist
+echo "Copying configuration files (if not already present)..."
+copy_if_not_exists ./prometheus/prometheus.yml $PROMETHEUS_DIR/prometheus.yml
+copy_if_not_exists ./prometheus/alert.rules.yml $PROMETHEUS_DIR/alert.rules.yml
+copy_if_not_exists ./alertmanager/alertmanager.yml $ALERTMANAGER_DIR/alertmanager.yml
+copy_if_not_exists ./blackbox-exporter/config.yml $BLACKBOX_DIR/config.yml
+copy_if_not_exists ./loki/loki-config.yaml $LOKI_DIR/loki-config.yaml
+copy_if_not_exists ./promtail/promtail-config.yaml $PROMTAIL_DIR/promtail-config.yaml
+copy_if_not_exists ./promtail/positions.yaml $PROMTAIL_DIR/positions.yaml
 
-# Set permissions for Grafana
-echo "Setting permissions for Grafana..."
-sudo chown -R 472:472 $GRAFANA_DIR/data
-sudo chmod -R 755 $GRAFANA_DIR/data
+# Function to set permissions if the file exists
+set_permissions() {
+    local file=$1
+    local owner=$2
+    local mode=$3
+    if [[ -f "$file" ]]; then
+        echo "Setting permissions for $file"
+        chown "$owner" "$file"
+        chmod "$mode" "$file"
+    fi
+}
 
-# Set permissions for Promtail
-echo "Setting permissions for Promtail..."
-sudo chown -R promtail:promtail $PROMTAIL_DIR
-sudo chmod -R 755 $PROMTAIL_DIR
+# Apply permissions to configuration files
+set_permissions $PROMETHEUS_DIR/prometheus.yml root:root 644
+set_permissions $PROMETHEUS_DIR/alert.rules.yml root:root 644
+set_permissions $ALERTMANAGER_DIR/alertmanager.yml root:root 644
+set_permissions $BLACKBOX_DIR/config.yml root:root 644
+set_permissions $LOKI_DIR/loki-config.yaml root:root 644
+set_permissions $PROMTAIL_DIR/promtail-config.yaml root:root 644
+set_permissions $PROMTAIL_DIR/positions.yaml root:root 644
 
-# Set permissions for Loki
-echo "Setting permissions for Loki..."
-sudo chown -R 10001:10001 $LOKI_DIR
-sudo chmod -R 755 $LOKI_DIR
+# Set ownership and permissions for data directories using dynamic UID/GID
+echo "Setting data directory permissions..."
+chown -R $(id -u nobody):$(id -g nobody) $PROMETHEUS_DIR/data
+chmod -R 755 $PROMETHEUS_DIR/data
 
-# Set permissions for Traefik
-echo "Setting permissions for Traefik..."
-sudo touch $TRAEFIK_DIR/acme.json
-sudo chmod 600 $TRAEFIK_DIR/acme.json
+chown -R $(id -u grafana):$(id -g grafana) $GRAFANA_DIR/data
+chmod -R 755 $GRAFANA_DIR/data
 
-# Start the monitoring stack
+chown -R $(id -u promtail):$(id -g promtail) $PROMTAIL_DIR
+chmod -R 755 $PROMTAIL_DIR
+
+chown -R $(id -u loki):$(id -g loki) $LOKI_DIR
+chmod -R 755 $LOKI_DIR
+
+# Ensure Traefik acme.json file exists and has correct permissions
+echo "Ensuring Traefik acme.json permissions..."
+touch $TRAEFIK_DIR/acme.json
+chmod 600 $TRAEFIK_DIR/acme.json
+
+# Ensure Docker is installed
+if ! command -v docker &>/dev/null; then
+    echo "Error: Docker is not installed or not in PATH. Install it first."
+    exit 1
+fi
+
+# Ensure Docker Compose is installed
+if ! command -v docker-compose &>/dev/null && ! command -v docker compose &>/dev/null; then
+    echo "Error: docker-compose is not installed. Install it first."
+    exit 1
+fi
+
+# Ensure Docker network exists before running services
+if ! docker network inspect monitor >/dev/null 2>&1; then
+    echo "Creating 'monitor' Docker network..."
+    docker network create monitor
+fi
+
+# Start the monitoring stack with correct docker-compose command
 echo "Starting Docker services..."
-docker-compose up -d
+if command -v docker-compose &>/dev/null; then
+    docker-compose up -d
+else
+    docker compose up -d
+fi
 
-echo "Monitoring Environment setup completed!"
-echo "Test access to the services:"
-echo "Prometheus: http://43.205.119.100:9090"
-echo "Grafana: http://43.205.119.100:3000"
-echo "Alertmanager: http://43.205.119.100:9093"
-echo "Traefik Dashboard: http://43.205.119.100:8050"
+# Final status messages
+IP_ADDRESS=$(hostname -I | awk '{print $1}')
+echo "✅ Monitoring environment setup completed!"
+echo "🌍 Access your monitoring services at:"
+echo "   📌 Prometheus: http://$IP_ADDRESS:9090"
+echo "   📌 Grafana: http://$IP_ADDRESS:3000"
+echo "   📌 Alertmanager: http://$IP_ADDRESS:9093"
+echo "   📌 Traefik Dashboard: http://$IP_ADDRESS:8050"
+echo "🚀 Happy monitoring!"
 
+# ✅ 1. Ensured all necessary directories are created properly.
+# ✅ 2. Fixed permissions & ownership assignments to use dynamic UIDs/GIDs.
+# ✅ 3. Improved docker network inspect to suppress unwanted errors.
+# ✅ 4. Validated both docker and docker-compose installations.
+# ✅ 5. Used docker compose up -d for compatibility with newer versions.
+# ✅ 6. Enhanced logging to dynamically display the server IP.
+# ✅ 7. Ensured Traefik's acme.json is properly secured.
+# ✅ 8. Improved copy_if_not_exists to avoid copying empty files.
