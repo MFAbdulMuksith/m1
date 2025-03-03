@@ -64,24 +64,6 @@ services:
     networks:
       - monitor
 
-  node-exporter:
-    image: prom/node-exporter:v1.4.0
-    restart: always
-    container_name: node-exporter
-    ports:
-      - 9100:9100
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /:/rootfs:ro
-    command:
-      - "--path.procfs=/host/proc"
-      - "--path.rootfs=/rootfs"
-      - "--path.sysfs=/host/sys"
-      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
-    networks:
-      - monitor
-
   blackbox-exporter:
     image: prom/blackbox-exporter:v0.22.0
     restart: always
@@ -134,19 +116,6 @@ services:
     volumes:
       - /opt/container/loki/loki-config.yaml:/etc/loki/loki-config.yaml # Loki config file
       - /opt/prometheus/loki-data:/data/loki # Loki data storage
-    networks:
-      - monitor
-
-  promtail:
-    image: grafana/promtail:3.2.1
-    restart: always
-    container_name: promtail
-    volumes:
-      - /opt/container/promtail/promtail-config.yaml:/etc/promtail/promtail-config.yaml
-      - /var/log:/var/log
-      - /opt/container/promtail/positions.yaml:/var/lib/promtail/positions.yaml
-    command:
-      - "--config.file=/etc/promtail/promtail-config.yaml"
     networks:
       - monitor
 

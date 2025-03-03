@@ -13,7 +13,6 @@ ALERTMANAGER_DIR="$BASE_DIR/alertmanager"
 GRAFANA_DIR="$BASE_DIR/grafana"
 BLACKBOX_DIR="$BASE_DIR/blackbox"
 LOKI_DIR="$BASE_DIR/loki"
-PROMTAIL_DIR="$BASE_DIR/promtail"
 TRAEFIK_DIR="$BASE_DIR/traefik"
 
 # Create necessary directories
@@ -23,7 +22,6 @@ mkdir -p $ALERTMANAGER_DIR
 mkdir -p $GRAFANA_DIR/data
 mkdir -p $BLACKBOX_DIR
 mkdir -p $LOKI_DIR
-mkdir -p $PROMTAIL_DIR
 mkdir -p $TRAEFIK_DIR
 
 # Set proper permissions for base directory
@@ -53,8 +51,6 @@ copy_if_not_exists ./prometheus/alert.rules.yml $PROMETHEUS_DIR/alert.rules.yml
 copy_if_not_exists ./alertmanager/alertmanager.yml $ALERTMANAGER_DIR/alertmanager.yml
 copy_if_not_exists ./blackbox-exporter/config.yml $BLACKBOX_DIR/config.yml
 copy_if_not_exists ./loki/loki-config.yaml $LOKI_DIR/loki-config.yaml
-copy_if_not_exists ./promtail/promtail-config.yaml $PROMTAIL_DIR/promtail-config.yaml
-copy_if_not_exists ./promtail/positions.yaml $PROMTAIL_DIR/positions.yaml
 
 # Set permissions function
 set_permissions() {
@@ -74,8 +70,6 @@ set_permissions $PROMETHEUS_DIR/alert.rules.yml root:root 644
 set_permissions $ALERTMANAGER_DIR/alertmanager.yml root:root 644
 set_permissions $BLACKBOX_DIR/config.yml root:root 644
 set_permissions $LOKI_DIR/loki-config.yaml root:root 644
-set_permissions $PROMTAIL_DIR/promtail-config.yaml root:root 644
-set_permissions $PROMTAIL_DIR/positions.yaml root:root 644
 
 # Set ownership and permissions for data directories
 echo "Setting data directory permissions..."
@@ -84,9 +78,6 @@ chmod -R 755 $PROMETHEUS_DIR/data
 
 chown -R 472:472 $GRAFANA_DIR/data
 chmod -R 755 $GRAFANA_DIR/data
-
-chown -R promtail:promtail $PROMTAIL_DIR
-chmod -R 755 $PROMTAIL_DIR
 
 chown -R 10001:10001 $LOKI_DIR
 chmod -R 755 $LOKI_DIR
@@ -119,13 +110,3 @@ echo "📌 Prometheus: http://<SERVER_IP>:9090"
 echo "📌 Grafana: http://<SERVER_IP>:3000"
 echo "📌 Alertmanager: http://<SERVER_IP>:9093"
 echo "📌 Traefik Dashboard: http://<SERVER_IP>:8050"
-# The script is now more robust and efficient.
-# It checks if files exist before copying them,
-# sets permissions only if the files exist,
-# and provides more detailed output during execution.
-# It also ensures that the Traefik acme.json file has the correct permissions.
-# The script also checks if the 'monitor' Docker network exists before creating it.
-# Finally, it checks if Docker Compose is installed before starting the monitoring stack.
-# The script provides clear status messages at the end to indicate
-# the completion of the setup process and the URLs to access the services.
-# Overall, the script is well-structured and handles various scenarios gracefully.

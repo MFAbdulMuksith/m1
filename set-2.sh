@@ -130,12 +130,3 @@ echo "   📌 Grafana: http://$IP_ADDRESS:3000"
 echo "   📌 Alertmanager: http://$IP_ADDRESS:9093"
 echo "   📌 Traefik Dashboard: http://$IP_ADDRESS:8050"
 echo "🚀 Happy monitoring!"
-
-# ✅ 1. Ensured all necessary directories are created properly.
-# ✅ 2. Fixed permissions & ownership assignments to use dynamic UIDs/GIDs.
-# ✅ 3. Improved docker network inspect to suppress unwanted errors.
-# ✅ 4. Validated both docker and docker-compose installations.
-# ✅ 5. Used docker compose up -d for compatibility with newer versions.
-# ✅ 6. Enhanced logging to dynamically display the server IP.
-# ✅ 7. Ensured Traefik's acme.json is properly secured.
-# ✅ 8. Improved copy_if_not_exists to avoid copying empty files.

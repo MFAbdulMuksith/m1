@@ -429,3 +429,190 @@ You can now use Docker Compose to manage multi-container applications. For examp
 ```bash
 docker-compose up -d
 ```
+
+
+---
+
+Your `loki-config.yaml` has a **mistake in the `common` section**, as mentioned earlier. The `common` block does not exist in Loki's configuration schema. Instead, you should split it into **`storage_config`** and remove `instance_addr`.
+
+I'll provide the **corrected Loki configuration** and a **README.md** file with documentation for self-configuration.
+
+---
+
+### ✅ **Corrected `loki-config.yaml`**
+```yaml
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+
+storage_config:
+  filesystem:
+    chunks_directory: /tmp/loki/chunks
+    rules_directory: /tmp/loki/rules
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
+
+ruler:
+  alertmanager_url: http://43.205.119.100:9093
+
+analytics:
+  reporting_enabled: false
+```
+
+---
+
+### 📜 **README.md Documentation**
+Here is a **README.md** file with step-by-step instructions for self-configuration:
+
+#### 📌 **File: `README.md`**
+```md
+# Loki Configuration Guide
+
+This guide provides step-by-step instructions for configuring Loki for log aggregation and storage.
+
+---
+
+## 📌 1. Overview
+
+Loki is a log aggregation system designed for scalability and efficiency, inspired by Prometheus but optimized for logs.
+
+---
+
+## 📌 2. Configuration (`loki-config.yaml`)
+
+### 🔹 **Key Sections**
+- `server`: Defines HTTP and gRPC ports.
+- `storage_config`: Specifies the storage backend (Filesystem in this case).
+- `schema_config`: Defines how logs are stored.
+- `query_range`: Optimizes log queries.
+- `ruler`: Configures alerting using Alertmanager.
+- `analytics`: Disables usage analytics.
+
+---
+
+## 📌 3. Installation Steps
+
+### 🛠️ **Step 1: Install Loki**
+```sh
+wget https://github.com/grafana/loki/releases/latest/download/loki-linux-amd64 -O /usr/local/bin/loki
+chmod +x /usr/local/bin/loki
+```
+
+### 🛠️ **Step 2: Create Required Directories**
+```sh
+mkdir -p /tmp/loki/chunks /tmp/loki/rules
+chmod -R 777 /tmp/loki
+```
+
+### 🛠️ **Step 3: Run Loki**
+```sh
+loki --config.file=loki-config.yaml
+```
+
+To check if Loki is running:
+```sh
+curl -s http://localhost:3100/ready
+```
+Expected output: `"ready"`
+
+---
+
+## 📌 4. Configure Promtail for Log Collection
+
+### 🛠️ **Step 1: Install Promtail**
+```sh
+wget https://github.com/grafana/loki/releases/latest/download/promtail-linux-amd64 -O /usr/local/bin/promtail
+chmod +x /usr/local/bin/promtail
+```
+
+### 🛠️ **Step 2: Sample `promtail-config.yaml`**
+```yaml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+clients:
+  - url: "http://43.205.119.100:3100/loki/api/v1/push"
+
+positions:
+  filename: /etc/promtail/positions.yaml
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - labels:
+          job: server_logs
+          server: MonitoringHost
+          environment: MONITORING
+        __path__: /var/log/*.log
+```
+
+### 🛠️ **Step 3: Run Promtail**
+```sh
+promtail --config.file=promtail-config.yaml
+```
+
+---
+
+## 📌 5. Viewing Logs in Grafana
+
+1. Install Grafana:
+   ```sh
+   sudo apt install -y grafana
+   ```
+
+2. Start Grafana:
+   ```sh
+   sudo systemctl start grafana-server
+   ```
+
+3. Open Grafana in a web browser:
+   ```
+   http://localhost:3000
+   ```
+
+4. Add Loki as a data source:
+   - Go to **Settings → Data Sources**
+   - Select **Loki**
+   - Enter URL: `http://localhost:3100`
+   - Click **Save & Test**
+
+5. Start exploring logs!
+
+---
+
+## 📌 6. Troubleshooting
+
+### ❌ **Loki Not Starting?**
+Check logs:
+```sh
+journalctl -u loki --no-pager --lines=50
+```
+
+### ❌ **Loki Not Receiving Logs?**
+Check Loki's API:
+```sh
+curl -s "http://localhost:3100/api/prom/tail"
+```
+
+Check Promtail logs:
+```sh
+journalctl -u promtail --no-pager --lines=50
+```

@@ -131,10 +131,3 @@ echo "📌 Prometheus: http://<SERVER_IP>:9090"
 echo "📌 Grafana: http://<SERVER_IP>:3000"
 echo "📌 Alertmanager: http://<SERVER_IP>:9093"
 echo "📌 Traefik Dashboard: http://<SERVER_IP>:8050"
-
-# Added set -euo pipefail for better error handling.
-# Used readonly for constants.
-# Improved error messages and checks.
-# Updated the script to use docker compose instead of docker-compose.
-# Added a check for Docker installation.
-# Improved the final status message.
